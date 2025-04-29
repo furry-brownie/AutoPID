@@ -1,6 +1,5 @@
 #ifndef AUTOPID_H
 #define AUTOPID_H
-#include <Arduino.h>
 
 class AutoPID {
 
@@ -34,7 +33,7 @@ class AutoPID {
   private:
     double _Kp, _Ki, _Kd;
     double _integral, _previousError;
-    double _bangOn, _bangOff;
+    double _bangOn = 0.0, _bangOff = 0.0;
     double *_input, *_setpoint, *_output;
     double _outputMin, _outputMax;
     unsigned long _timeStep, _lastStep;
@@ -51,6 +50,7 @@ class AutoPIDRelay : public AutoPID {
       _pulseWidth = pulseWidth;
     };
 
+    void reset();
     void run();
 
     double getPulseValue();
