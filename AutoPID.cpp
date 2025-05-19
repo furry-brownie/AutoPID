@@ -65,8 +65,7 @@ bool AutoPID::atSetPoint(double threshold) {
 
 void AutoPID::run() {
   if (_stopped) {
-    _stopped = false;
-    reset();
+    return;
   }
   //if bang thresholds are defined and we're outside of them, use bang-bang control
   if (notZero(_bangOn) && ((*_setpoint - *_input) > _bangOn)) {
@@ -91,14 +90,21 @@ void AutoPID::run() {
   }
 }//void AutoPID::run
 
+void AutoPID::start() {
+  reset();
+  _stopped = false;
+}
+
 void AutoPID::stop() {
   _stopped = true;
   reset();
 }
+
 void AutoPID::reset() {
   _lastStep = sys_millis();
   _integral = 0;
   _previousError = 0;
+  *_output = 0;
 }
 
 bool AutoPID::isStopped(){
